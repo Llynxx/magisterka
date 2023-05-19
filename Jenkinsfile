@@ -30,7 +30,7 @@ pipeline {
                 stage("App") {
                     steps {
                         script {
-                            repositoryImage = docker.build("lynx99/magisterka:$VERSION", "-f Dockerfile.repository .")
+                            repositoryImage = docker.build("lynx99/magisterka:$VERSION", "-f Dockerfile .")
                         }
                     }
                 }
