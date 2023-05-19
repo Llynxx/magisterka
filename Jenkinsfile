@@ -60,10 +60,7 @@ pipeline {
             stages {
                 stage("App") {
                     steps {
-                        withKubeConfig([credentialsId: 'KUBE', serverUrl: "https://localhost:6443"]) {
-                            sh 'helm repo update'
-                            sh """helm list -a"""
-                        }
+                        sh 'helm list -a --kubeconfing config.yaml'
                     }
                 }
             }
