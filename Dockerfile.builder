@@ -1,4 +1,4 @@
-FROM openjdk:11.0.10-jdk
+FROM openjdk:17-oracle
 RUN apt-get update -y && apt-get install maven -y
 # Install Docker (for docker-in-docker)
 RUN curl -fsSL https://get.docker.com | bash \
