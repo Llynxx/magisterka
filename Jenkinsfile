@@ -30,7 +30,7 @@ pipeline {
                 stage("App") {
                     steps {
                         script {
-                            repositoryImage = docker.build("artifacts.nvtvt.com/alfresco-content-services:$VERSION", "-f Dockerfile.repository .")
+                            repositoryImage = docker.build("lynx99/magisterka:$VERSION", "-f Dockerfile.repository .")
                         }
                     }
                 }
@@ -42,10 +42,7 @@ pipeline {
                     when { expression { params.BUILD_REPOSITORY } }
                     steps {
                         script {
-                            docker.withRegistry('https://artifacts.nvtvt.com', 'artifactory_tvn') {
-                                repositoryImage.push()
-                            }
-                            sh(script: "docker image rm artifacts.nvtvt.com/alfresco-content-services:$VERSION")
+                            repositoryImage.push()
                         }
                     }
                 }
