@@ -42,9 +42,11 @@ pipeline {
             parallel {
                 stage("App") {
                     steps {
+                        script {
                             docker.withRegistry('lynx99/magisterka', 'hub') {
                                 image.push()
                             }
+                        }
                     }
                 }
             }
