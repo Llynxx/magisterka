@@ -12,7 +12,7 @@ pipeline {
         stage('Build applications') {
             failFast true
             parallel {
-                stage("Repository") {
+                stage("Appp") {
                     agent {
                         dockerfile {
                             filename 'Dockerfile.builder'
@@ -41,7 +41,6 @@ pipeline {
         stage('Push Docker images') {
             parallel {
                 stage("App") {
-                    when { expression { params.BUILD_REPOSITORY } }
                     steps {
                         script {
                             repositoryImage.push()
