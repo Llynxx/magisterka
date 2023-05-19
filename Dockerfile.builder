@@ -1,5 +1,5 @@
 FROM openjdk:17-jdk-slim
-RUN apt-get update -y && apt-get install maven -y
+RUN apt-get update -y && apt-get install maven -y && apt-get curl -y
 # Install Docker (for docker-in-docker)
 RUN curl -fsSL https://get.docker.com | bash \
     && rm -rf /var/lib/apt/lists/*
