@@ -58,14 +58,8 @@ pipeline {
             stages {
                 stage("App") {
                     steps {
-                        withKubeConfig([credentialsId: KUBE, serverUrl: "https://10.0.2.2:6443"]) {
-                            sh 'helm repo update'
-                            sh """helm upgrade alfresco-content-services artifactory/alfresco-content-services \
-                                   --install \
-                                   --namespace production \
-                                   --reuse-values \
-                                   --atomic \
-                                   --timeout 600s"""
+                        withKubeConfig([credentialsId: 'KUBE', serverUrl: "https://localhost:6443"]) {
+                            sh "kubectl get pods -A"
                         }
                     }
                 }
