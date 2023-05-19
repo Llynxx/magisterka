@@ -31,6 +31,7 @@ pipeline {
                 stage("App") {
                     steps {
                         script {
+                            unstash 'artifacts'
                             repositoryImage = docker.build("lynx99/magisterka:$VERSION", "-f Dockerfile .")
                         }
                     }
