@@ -20,6 +20,7 @@ pipeline {
                     }
                     steps {
                         sh 'mvn clean install'
+                        stash name: 'artifacts', includes: 'magisterka/target/magisterka-0.0.1-SNAPSHOT.jar,'
                     }
                 }
             }
