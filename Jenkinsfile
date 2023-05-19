@@ -5,7 +5,7 @@ pipeline {
         stage('Determine tag') {
             steps {
                 script {
-                    VERSION = prod
+                    VERSION = "prod"
                 }
             }
         }
