@@ -9,22 +9,6 @@ pipeline {
                 }
             }
         }
-        stage('Package Helm Chart') {
-            failFast true
-            parallel {
-                stage('Repository') {
-                    agent {
-                        dockerfile {
-                            filename 'Dockerfile.builder'
-                        }
-                    }
-                    steps {
-                        sh 'HELM_CHART_NAME=magisterka ./helm_package.sh'
-                        stash name: 'chart', includes: "magisterka-${VERSION}.tgz"
-                    }
-                }
-            }
-        }
         stage('Build applications') {
             failFast true
             parallel {
@@ -35,8 +19,7 @@ pipeline {
                         }
                     }
                     steps {
-                        sh './build-repository.sh'
-                        stash name: 'repository-artifacts', includes: 'alfresco-custom-modules-platform/target/alfresco-custom-modules-platform-1.0-SNAPSHOT.amp,alfresco-localisation-tools/target/alfresco-pl.jar'
+                        sh 'mvn clean install'
                     }
                 }
             }
@@ -44,10 +27,9 @@ pipeline {
         stage('Build Docker') {
             failFast true
             parallel {
-                stage("Repository") {
+                stage("App") {
                     steps {
                         script {
-                            unstash 'repository-artifacts'
                             repositoryImage = docker.build("artifacts.nvtvt.com/alfresco-content-services:$VERSION", "-f Dockerfile.repository .")
                         }
                     }
@@ -56,7 +38,7 @@ pipeline {
         }
         stage('Push Docker images') {
             parallel {
-                stage("Repository") {
+                stage("App") {
                     when { expression { params.BUILD_REPOSITORY } }
                     steps {
                         script {
@@ -76,12 +58,9 @@ pipeline {
                 }
             }
             stages {
-                stage("Repository") {
+                stage("App") {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_NAME, usernameVariable: 'username', passwordVariable: 'password')]) {
-                            sh "helm repo add artifactory $HELM_REPOSITORY --username $username --password $password"
-                        }
-                        withKubeConfig([credentialsId: KUBE_SERVICE_ACCOUNT_CREDENTIALS_NAME, serverUrl: KUBE_API]) {
+                        withKubeConfig([credentialsId: KUBE, serverUrl: "https://10.0.2.2:6443"]) {
                             sh 'helm repo update'
                             sh """helm upgrade alfresco-content-services artifactory/alfresco-content-services \
                                    --install \
