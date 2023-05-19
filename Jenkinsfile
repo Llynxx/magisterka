@@ -43,7 +43,7 @@ pipeline {
                 stage("App") {
                     steps {
                         script {
-                            docker.withRegistry('lynx99/magisterka', 'hub') {
+                            docker.withRegistry('https://lynx99/magisterka', 'hub') {
                                 image.push()
                             }
                         }
