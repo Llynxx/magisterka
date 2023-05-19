@@ -32,7 +32,7 @@ pipeline {
                     steps {
                         script {
                             unstash 'artifacts'
-                            repositoryImage = docker.build("lynx99/magisterka:$VERSION", "-f Dockerfile .")
+                            image = docker.build("lynx99/magisterka:$VERSION", "-f Dockerfile .")
                         }
                     }
                 }
@@ -42,9 +42,9 @@ pipeline {
             parallel {
                 stage("App") {
                     steps {
-                        script {
-                            repositoryImage.push()
-                        }
+                            docker.withRegistry('lynx99/magisterka', 'hub') {
+                                image.push()
+                            }
                     }
                 }
             }
