@@ -52,11 +52,7 @@ pipeline {
             }
         }
         stage("Deploy") {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile.builder'
-                }
-            }
+            agent any
             stages {
                 stage("App") {
                     steps {
