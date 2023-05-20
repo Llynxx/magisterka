@@ -56,7 +56,9 @@ pipeline {
             stages {
                 stage("App") {
                     steps {
-                        sh 'helm list -a --kubeconfing config.yaml'
+                        withCredentials([file(credentialsId: 'K8s', variable: 'KUBECONFIG')]) {
+                            sh """helm list -a"""
+                        }
                     }
                 }
             }
