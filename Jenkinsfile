@@ -12,7 +12,7 @@ pipeline {
         stage('Build applications') {
             failFast true
             parallel {
-                stage("Appp") {
+                stage("App") {
                     agent {
                         dockerfile {
                             filename 'Dockerfile.builder'
