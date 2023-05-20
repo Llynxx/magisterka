@@ -57,7 +57,7 @@ pipeline {
                 stage("App") {
                     steps {
                         withCredentials([file(credentialsId: 'K8s', variable: 'KUBECONFIG')]) {
-                            sh """helm list -a"""
+                            sh """helm upgrade application ./helm --namespace prod"""
                         }
                     }
                 }

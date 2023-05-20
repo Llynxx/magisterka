@@ -37,30 +37,8 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: http
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: http
-            initialDelaySeconds: 10
-            periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "prod"
-          volumeMounts:
-            - mountPath: /app/config
-              name: config
-      volumes:
-        - name: config
-          configMap:
-            name: app-config
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
